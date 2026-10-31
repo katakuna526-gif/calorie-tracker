@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#11130f">
+  <meta name="description" content="A privacy-minded calorie and fitness tracker built with Python, with food, exercise, weight, and progress tools.">
+  <title>Calorie Tracker — Project by Your Team</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #11130f;
+      --panel: #1a1d18;
+      --panel-soft: #20241d;
+      --line: #343a2e;
+      --ink: #f4f5ef;
+      --muted: #a9afa0;
+      --lime: #c6f135;
+      --lime-ink: #17200a;
+      --blue: #9bbdff;
+      --max: 1120px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--bg); color: var(--ink); line-height: 1.6; }
+    a { color: inherit; }
+    .wrap { width: min(var(--max), calc(100% - 40px)); margin: auto; }
+    header { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; border-bottom: 1px solid #ffffff12; }
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; font-size: 14px; font-weight: 700; letter-spacing: -.02em; }
+    .brand-mark { width: 34px; height: 34px; display: grid; place-items: center; color: var(--lime-ink); background: var(--lime); border-radius: 11px; font-weight: 900; }
+    nav { display: flex; align-items: center; gap: 28px; font-size: 13px; color: var(--muted); }
+    nav a { text-decoration: none; }
+    nav a:hover, nav a:focus-visible { color: var(--ink); }
+    .eyebrow { color: var(--lime); text-transform: uppercase; letter-spacing: .14em; font-weight: 700; font-size: 11px; }
+    .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 54px; align-items: center; padding: 84px 0 92px; }
+    h1 { font-size: clamp(44px, 6.5vw, 76px); line-height: .99; letter-spacing: -.065em; max-width: 680px; margin: 18px 0 22px; }
+    h1 span { color: var(--lime); }
+    .lead { max-width: 590px; color: #c5c9bd; font-size: 17px; line-height: 1.75; }
+    .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 30px; }
+    .button { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; padding: 0 19px; border-radius: 13px; text-decoration: none; font-size: 13px; font-weight: 750; }
+    .primary { background: var(--lime); color: var(--lime-ink); }
+    .secondary { border: 1px solid #ffffff24; color: var(--ink); }
+    .meta { color: var(--muted); font-size: 12px; margin-top: 25px; }
+    .device-feature { justify-self: center; width: min(100%, 300px); padding: 8px; border: 1px solid #42483a; border-radius: 38px; background: #080908; box-shadow: 0 28px 90px #0009; }
+    .device-feature img { display: block; width: 100%; height: auto; border-radius: 29px; }
+    .device-caption { max-width: 330px; margin: 15px auto 0; text-align: center; color: var(--muted); font-size: 12px; }
+    .section { padding: 76px 0; border-top: 1px solid #ffffff12; }
+    .section-head { max-width: 650px; margin-bottom: 32px; }
+    h2 { margin: 8px 0 12px; font-size: clamp(30px, 4vw, 46px); line-height: 1.08; letter-spacing: -.045em; }
+    .sub { color: var(--muted); margin: 0; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .card { padding: 22px; border: 1px solid var(--line); border-radius: 18px; background: var(--panel); }
+    .icon { width: 37px; height: 37px; display: grid; place-items: center; margin-bottom: 18px; border-radius: 12px; color: var(--lime); background: #c6f13515; font-size: 17px; }
+    h3 { margin: 0 0 8px; font-size: 16px; }
+    .card p { margin: 0; color: var(--muted); font-size: 13px; }
+    .split { display: grid; grid-template-columns: .8fr 1.2fr; gap: 54px; align-items: start; }
+    .stack { display: flex; flex-wrap: wrap; gap: 9px; }
+    .tag { padding: 8px 12px; border: 1px solid var(--line); border-radius: 99px; color: #d8dccf; background: var(--panel); font-size: 12px; }
+    .steps { display: grid; gap: 14px; }
+    .step { display: grid; grid-template-columns: 38px 1fr; gap: 14px; align-items: start; }
+    .num { width: 34px; height: 34px; display: grid; place-items: center; color: var(--lime); border: 1px solid var(--line); border-radius: 50%; font-size: 12px; }
+    .step p { margin: 3px 0 0; color: var(--muted); font-size: 13px; }
+    .showcase { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: start; }
+    .shot-card { margin: 0; padding: 13px; border: 1px solid var(--line); border-radius: 20px; background: var(--panel); }
+    .shot-frame { display: block; width: min(100%, 270px); margin: auto; padding: 7px; overflow: hidden; border: 1px solid #414638; border-radius: 31px; background: #080908; }
+    .shot-frame img { display: block; width: 100%; height: auto; border-radius: 23px; }
+    .shot-copy { padding: 15px 5px 4px; }
+    .shot-copy p { margin: 4px 0 0; color: var(--muted); font-size: 12px; }
+    .privacy-note { margin-top: 22px; }
+    .team-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+    .person-mark { width: 42px; height: 42px; display: grid; place-items: center; margin-bottom: 15px; border-radius: 14px; color: var(--lime-ink); background: var(--lime); font-size: 13px; font-weight: 800; }
+    .team-card h3 { margin-bottom: 7px; }
+    .team-card .role { color: var(--lime); font-size: 11px; font-weight: 700; line-height: 1.5; }
+    .team-card p { margin-top: 12px; }
+    .notice { padding: 19px 21px; border-left: 3px solid var(--lime); border-radius: 0 14px 14px 0; color: #d8dccf; background: var(--panel-soft); font-size: 13px; }
+    footer { padding: 26px 0 40px; border-top: 1px solid #ffffff12; color: var(--muted); font-size: 12px; }
+    .foot { display: flex; justify-content: space-between; gap: 16px; }
+    :focus-visible { outline: 2px solid var(--lime); outline-offset: 4px; }
+    @media (max-width: 780px) {
+      .hero { grid-template-columns: 1fr; gap: 38px; padding: 58px 0 70px; }
+      .device-feature { width: min(100%, 280px); }
+      .grid { grid-template-columns: 1fr 1fr; }
+      .showcase { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .team-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .split { grid-template-columns: 1fr; gap: 27px; }
+    }
+    @media (max-width: 520px) {
+      .wrap { width: min(var(--max), calc(100% - 32px)); }
+      header { min-height: 68px; }
+      nav { gap: 13px; font-size: 12px; }
+      nav a:last-child { display: none; }
+      .hero { padding-top: 48px; }
+      .lead { font-size: 15px; }
+      .grid, .showcase, .team-grid { grid-template-columns: 1fr; }
+      .shot-frame { width: min(100%, 310px); }
+      .section { padding: 58px 0; }
+      .foot { flex-direction: column; }
+      body { padding-bottom: calc(88px + env(safe-area-inset-bottom)); }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <a class="brand" href="#top" aria-label="Calorie Tracker home"><span class="brand-mark" aria-hidden="true">C</span> Calorie Tracker</a>
+      <nav aria-label="Main navigation">
+        <a href="#features">Features</a><a href="#screens">Screens</a><a href="#team">Team</a><a href="#build">Build</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div>
+          <div class="eyebrow">A practical health tracking project</div>
+          <h1 id="hero-title">Build habits.<br><span>See your progress.</span></h1>
+          <p class="lead">A calorie and fitness tracker for logging meals, exercise and weight in one place. Built around clear estimates, simple daily tools and data the user can back up.</p>
+          <div class="actions"><a class="button primary" id="download-app" href="assets/calorie-tracker-source.zip" download>Download app project <span aria-hidden="true">&nbsp;↓</span></a><a class="button secondary" href="#screens">View app screens</a></div>
+          <p class="meta">Python · Tkinter desktop · Flet mobile interface · Local JSON storage</p>
+        </div>
+        <div>
+          <div class="device-feature"><img src="assets/showcase-log.png" alt="Calorie Tracker Log screen on an Android phone; personal values are obscured"></div>
+          <p class="device-caption">A real Android screen from the demo build. Example tracking values are shown.</p>
+        </div>
+      </section>
+
+      <section class="section" id="screens" aria-labelledby="screens-title">
+        <div class="section-head"><div class="eyebrow">Inside the app</div><h2 id="screens-title">A closer look at the screens.</h2><p class="sub">Phone screenshots from the Android demo, shown in a consistent device frame.</p></div>
+        <div class="showcase">
+          <figure class="shot-card"><a class="shot-frame" href="assets/showcase-log.png" target="_blank" rel="noopener"><img src="assets/showcase-log.png" alt="Log screen with calorie summary, macro progress, daily target and add button"></a><figcaption class="shot-copy"><h3>Daily Log</h3><p>Daily totals, nutrition progress and quick access to food or exercise entry.</p></figcaption></figure>
+          <figure class="shot-card"><a class="shot-frame" href="assets/showcase-calendar.png" target="_blank" rel="noopener"><img src="assets/showcase-calendar.png" alt="Monthly calendar screen with selected day and logged-day markers"></a><figcaption class="shot-copy"><h3>Calendar</h3><p>Move through months and open a selected day to review its log.</p></figcaption></figure>
+          <figure class="shot-card"><a class="shot-frame" href="assets/showcase-stats.png" target="_blank" rel="noopener"><img src="assets/showcase-stats.png" alt="Weekly stats screen with period selector, chart area, insights and CSV export"></a><figcaption class="shot-copy"><h3>Stats and export</h3><p>Switch between day, week and month views, then export a CSV report.</p></figcaption></figure>
+          <figure class="shot-card"><a class="shot-frame" href="assets/showcase-weight.png" target="_blank" rel="noopener"><img src="assets/showcase-weight.png" alt="Weight screen with entry form and private measurement values obscured"></a><figcaption class="shot-copy"><h3>Weight history</h3><p>Record weigh-ins and follow the trend when enough history is available.</p></figcaption></figure>
+          <figure class="shot-card"><a class="shot-frame" href="assets/showcase-settings.png" target="_blank" rel="noopener"><img src="assets/showcase-settings.png" alt="Settings screen with private profile details hidden, plus units, appearance and backup controls"></a><figcaption class="shot-copy"><h3>Settings</h3><p>Manage profile, units, appearance, and data backup or restore.</p></figcaption></figure>
+        </div>
+        <div class="notice privacy-note"><strong>Demo data:</strong> these screens use sample profile, food, activity and weight values to show how the app looks in use.</div>
+      </section>
+
+      <section class="section" id="features" aria-labelledby="features-title">
+        <div class="section-head"><div class="eyebrow">The toolkit</div><h2 id="features-title">Useful day to day. Clear about estimates.</h2><p class="sub">The app brings food, activity and progress tracking together without presenting estimates as medical advice.</p></div>
+        <div class="grid">
+          <article class="card"><div class="icon" aria-hidden="true">＋</div><h3>Food and meal log</h3><p>Search foods, save custom items, choose serving sizes, assign meals and review a calorie estimate before logging.</p></article>
+          <article class="card"><div class="icon" aria-hidden="true">↗</div><h3>Exercise entries</h3><p>Record an activity and duration to estimate exercise calories using the profile's weight.</p></article>
+          <article class="card"><div class="icon" aria-hidden="true">▦</div><h3>Calendar and stats</h3><p>Find logged days, review day, week or month summaries, and export a period as CSV.</p></article>
+          <article class="card"><div class="icon" aria-hidden="true">⌁</div><h3>Weight history</h3><p>Log weigh-ins, see a trend when there is enough history, and follow progress toward a goal.</p></article>
+          <article class="card"><div class="icon" aria-hidden="true">◐</div><h3>Personal settings</h3><p>Set up a profile, choose units and appearance, and adjust goals and nutrition targets.</p></article>
+          <article class="card"><div class="icon" aria-hidden="true">↻</div><h3>Backup and restore</h3><p>Save a JSON backup and restore it with validation and a safety copy of current data.</p></article>
+        </div>
+      </section>
+
+      <section class="section" id="build" aria-labelledby="build-title">
+        <div class="split">
+          <div class="section-head"><div class="eyebrow">Under the hood</div><h2 id="build-title">One app. Two interfaces.</h2><p class="sub">The existing desktop tracker and the mobile-ready Flet app share the core calculations and data models.</p><div class="stack" style="margin-top:22px"><span class="tag">Python</span><span class="tag">Flet 1.0.3</span><span class="tag">Tkinter</span><span class="tag">JSON</span><span class="tag">unittest</span></div></div>
+          <div class="steps">
+            <div class="step"><span class="num">01</span><p><strong>Set up a profile.</strong><br>Answer a guided set of questions; optional inputs can be skipped.</p></div>
+            <div class="step"><span class="num">02</span><p><strong>Log a day.</strong><br>Add meals and exercise, then review the daily summary.</p></div>
+            <div class="step"><span class="num">03</span><p><strong>Review progress.</strong><br>Use calendar, stats and weight history; export or back up data when needed.</p></div>
+            <div class="notice"><strong>Privacy and accuracy:</strong> desktop data is stored locally as JSON. Calorie, nutrition and exercise numbers are estimates and should not replace professional advice.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="about" aria-labelledby="about-title">
+        <div class="section-head"><div class="eyebrow">Project notes</div><h2 id="about-title">Made to be understandable and maintainable.</h2><p class="sub">Calculation logic is separated from the interface and covered by an automated test suite. The project includes both the desktop app and a mobile-oriented interface with Android build configuration. Download the source package above; an installable APK is not included yet.</p></div>
+        <div class="notice">The source package is available to download. An installable Android APK is not included yet; build instructions are included in the package.</div>
+      </section>
+
+      <section class="section" id="team" aria-labelledby="team-title">
+        <div class="section-head"><div class="eyebrow">The people behind it</div><h2 id="team-title">Meet the developers.</h2><p class="sub">A four-person team built and reviewed the calorie tracker together, with work shared across product direction, interface and calculation logic.</p></div>
+        <div class="team-grid">
+          <article class="card team-card"><div class="person-mark" aria-hidden="true">AJ</div><h3>Alex Joy Tirkey</h3><div class="role">Team Lead · Lead Developer</div><p>Led the project and coordinated the overall app development.</p></article>
+          <article class="card team-card"><div class="person-mark" aria-hidden="true">US</div><h3>Ujjwal Sagar Murmu</h3><div class="role">UI · Front-End Development Support</div><p>Helped with the app interface and front-end presentation.</p></article>
+          <article class="card team-card"><div class="person-mark" aria-hidden="true">KR</div><h3>Kanhaiya Rai</h3><div class="role">Backend · Calorie Engine Development Support</div><p>Helped with backend work and calorie-engine development.</p></article>
+          <article class="card team-card"><div class="person-mark" aria-hidden="true">PR</div><h3>Priyanshu Ranjan</h3><div class="role">Backend · Calorie Engine Development Support</div><p>Helped with backend work and calorie-engine development.</p></article>
+        </div>
+        <div class="notice privacy-note"><strong>Team testing:</strong> all four team members tested the app together.</div>
+      </section>
+    </main>
+    <footer><div class="foot"><span>Calorie Tracker · Portfolio project</span><span>Designed for everyday logging. Estimates only.</span></div></footer>
+  </div>
+</body>
+</html>
